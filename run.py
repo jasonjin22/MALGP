@@ -1,6 +1,8 @@
 import random
 import read_data as rd
 import numpy as np
+import argparse
+from config import get_config
 from state import State
 from base_model import BaseModel
 
@@ -38,14 +40,14 @@ def generate_toy_data(N, num_views):
     return X, y
 
 
-def run(mode):
+def run(mode,conf):
     """
     run the multi-view learning algorithm
     @param mode: if mode is 0, run the basic algorithm (with no active learning), if 1, run ALMVL
     @return: None
     """
     # read data
-    N, num_views, X_train, Y_train, X_val, Y_val, X_test, Y_test = rd.read_data('some parameters')
+    N, num_views, X_train, Y_train, X_val, Y_val, X_test, Y_test = rd.read_data('some parameters',conf)
 
     if mode == 0:
         # hyper parameters:
@@ -65,4 +67,9 @@ def run(mode):
 
 
 if __name__ == '__main__':
-    run(1)
+    parser = argparse.ArgumentParser(description='for ALMVL')
+    parser.add_argument("-m", "--mode", help="mode for active learning", default=1, type=int)
+    args = parser.parse_args()
+
+    conf = get_config()
+    run(args.mode,conf)
