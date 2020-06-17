@@ -5,3 +5,6 @@
        add requirements.txt
 
        add transformation from mat to numpy in read_data.py
+
+## 0617
+[Chen] add PCA in read_data.py and related input setting in run.py. we could use "python3 run.py -pv 20,20,20,20,20,20" to apply the PCA to a dataset that has six views.

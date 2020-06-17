@@ -1,3 +1,11 @@
+'''
+@Author: your name
+@Date: 2020-06-16 21:16:30
+@LastEditTime: 2020-06-17 15:19:33
+@LastEditors: Please set LastEditors
+@Description: In User Settings Edit
+@FilePath: /ALMVL/run.py
+'''
 import random
 import read_data as rd
 import numpy as np
@@ -69,7 +77,13 @@ def run(mode,conf):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='for ALMVL')
     parser.add_argument("-m", "--mode", help="mode for active learning", default=1, type=int)
+    parser.add_argument("-pv", "--view", help="PCA parameters for every view and the format is 2,3,4(separated by commas)")
     args = parser.parse_args()
 
     conf = get_config()
+    conf.pv = args.view
+    if conf.pv:
+        temp = conf.pv.split(',')
+        conf.pv = [int(i) for i in temp]
+    
     run(args.mode,conf)
