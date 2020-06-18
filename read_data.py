@@ -1,7 +1,7 @@
 '''
 @Author: your name
 @Date: 2020-06-16 21:16:30
-@LastEditTime: 2020-06-17 15:39:43
+@LastEditTime: 2020-06-18 10:59:07
 @LastEditors: Please set LastEditors
 @Description: In User Settings Edit
 @FilePath: /ALMVL/read_data.py
@@ -36,7 +36,7 @@ def read_data(data_set, conf):
     X = matr['X'][0]
     Y = matr['Y']
     N = Y.size
-    num_views = X.size
+    num_views = conf.new_views
     for i in range(num_views):
         X[i].resize(N,(X[i].size//N))
         if conf.pv:
@@ -61,11 +61,13 @@ def read_data(data_set, conf):
             total_data.append(temp_points)
         elif Y[i][0] == 3:
             break
+
+    new_N = len(total_data)
     
     random.shuffle(total_data)
-    train_set_num = int(N*conf.train_set)
-    val_set_num = int(N*(conf.train_set+conf.val_set))
-    test_set_num = int(N*(conf.train_set+conf.val_set+conf.test_set))
+    train_set_num = int(new_N*conf.train_set)
+    val_set_num = int(new_N*(conf.train_set+conf.val_set))
+    test_set_num = int(new_N*(conf.train_set+conf.val_set+conf.test_set))
 
     temp_train_set = total_data[:train_set_num]
     temp_val_set = total_data[train_set_num:val_set_num]
@@ -97,6 +99,8 @@ def read_data(data_set, conf):
         elif temp_test_set[i].get(1):
             Y_test.append([1])
             X_test.append(temp_test_set[i][1])
+    
+    import pdb;pdb.set_trace()
 
     return N, num_views, X_train, Y_train, X_val, Y_val, X_test, Y_test
 
