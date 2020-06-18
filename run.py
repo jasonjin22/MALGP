@@ -18,6 +18,7 @@ from base_model import BaseModel
 def add_points_into_states(N, X, Y, num_views, state):
     """
     traverse the read dataset and call state.add_point to add all the points into state.U_t
+    determine whether it converge or not
     @param N: number of training samples
     @param X: a list of dictionaries, each dictionary denotes a sample
     @param Y: a numpy array denotes the labels of all the training samples
@@ -25,6 +26,8 @@ def add_points_into_states(N, X, Y, num_views, state):
     @param state: the state
     @return: None
     """
+    state.model()
+
     pass
 
 
@@ -55,7 +58,7 @@ def run(mode,conf):
     @return: None
     """
     # read data
-    N, num_views, X_train, Y_train, X_val, Y_val, X_test, Y_test = rd.read_data('some parameters',conf)
+    N, num_views, X_train, Y_train, X_val, Y_val, X_test, Y_test, dimensions = rd.read_data('some parameters',conf)
 
     if mode == 0:
         # hyper parameters:
@@ -66,9 +69,11 @@ def run(mode,conf):
         # sample some points at the beginning
         state.sampling_init(sample_rate_init)
     else:
-        N = 50
-        num_views = 2
-        X_train, Y_train = generate_toy_data(N, num_views)
+        # X_train, Y_train = generate_toy_data(N, num_views)
+
+        state = State(N,dimensions,conf)
+        #put num of conf.sample_init_rate of points into state.s_t.
+        state.sampling_init(X_train, Y_train,conf)
         base_model = BaseModel(N, X_train, Y_train, num_views)
 
 

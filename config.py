@@ -12,10 +12,11 @@ from pathlib import Path
 def get_config():
     conf = edict()
     conf.data_path = "datasets/mvdata/Caltech101-7.mat"
-    conf.new_views = 2
+    conf.num_views = 2
     conf.val_set = 0.1
     conf.test_set = 0.1
     conf.train_set = 0.8
+    conf.sample_rate_init = 0.2
     
 
     return conf
