@@ -60,6 +60,8 @@ def run(mode,conf):
     # read data
     N, num_views, X_train, Y_train, X_val, Y_val, X_test, Y_test, dimensions = rd.read_data('some parameters',conf)
 
+
+
     if mode == 0:
         # hyper parameters:
         sample_rate_init = 0.1
@@ -72,10 +74,10 @@ def run(mode,conf):
         # X_train, Y_train = generate_toy_data(N, num_views)
 
         state = State(N,dimensions,conf)
-        #put num of conf.sample_init_rate of points into state.s_t.
-        state.sampling_init(X_train, Y_train,conf)
-        base_model = BaseModel(N, X_train, Y_train, num_views)
-
+        x_s,x_u,y_s = state.sampling_init(X_train, Y_train,conf)
+        for i in range(100):
+            base_model = state.modeling(x_s, x_u, y_s)
+            state.sampling()
 
 
 

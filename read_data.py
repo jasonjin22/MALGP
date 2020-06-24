@@ -36,7 +36,7 @@ def read_data(data_set, conf):
     X = matr['X'][0]
     Y = matr['Y']
     N = Y.size
-    num_views = conf.new_views
+    num_views = conf.num_views
     for i in range(num_views):
         X[i].resize(N,(X[i].size//N))
         if conf.pv:
@@ -127,8 +127,13 @@ def read_data(data_set, conf):
             # X_test.append(temp_test_set[i][1])
     X_test.append(np.array(X_1))
     X_test.append(np.array(X_2))
+
+    #eg: dimensions = {'0': dimention of view0, '1': dimension of view1, '2':dimension of view2}
+    dimensions = {}
+    for i in range(num_views):
+        dimensions[i] = len(X_train[i][0])
     
-    return N, num_views, X_train, Y_train, X_val, Y_val, X_test, Y_test
+    return N, num_views, X_train, Y_train, X_val, Y_val, X_test, Y_test,dimensions
 
 def for_PCA(data, num_components):
     """
