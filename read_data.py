@@ -1,7 +1,7 @@
 '''
 @Author: your name
 @Date: 2020-06-16 21:16:30
-@LastEditTime: 2020-06-17 15:39:43
+@LastEditTime: 2020-06-18 10:59:07
 @LastEditors: Please set LastEditors
 @Description: In User Settings Edit
 @FilePath: /ALMVL/read_data.py
@@ -36,7 +36,7 @@ def read_data(data_set, conf):
     X = matr['X'][0]
     Y = matr['Y']
     N = Y.size
-    num_views = conf.num_views
+    num_views = conf.new_views
     for i in range(num_views):
         X[i].resize(N,(X[i].size//N))
         if conf.pv:
@@ -68,6 +68,7 @@ def read_data(data_set, conf):
     train_set_num = int(new_N*conf.train_set)
     val_set_num = int(new_N*(conf.train_set+conf.val_set))
     test_set_num = int(new_N*(conf.train_set+conf.val_set+conf.test_set))
+
     temp_train_set = total_data[:train_set_num]
     temp_val_set = total_data[train_set_num:val_set_num]
     temp_test_set = total_data[val_set_num:]
@@ -90,7 +91,6 @@ def read_data(data_set, conf):
             Y_val.append([1])
             X_val.append(temp_val_set[i][1])
     
-
     for i in range(len(temp_test_set)):
         if temp_test_set[i].get(-1):
             # Y_train.append(np.array([-1]))
@@ -99,20 +99,17 @@ def read_data(data_set, conf):
         elif temp_test_set[i].get(1):
             Y_test.append([1])
             X_test.append(temp_test_set[i][1])
+    
+    import pdb;pdb.set_trace()
 
-
-    #eg: dimensions = {'0': dimention of view0, '1': dimension of view1, '2':dimension of view2}
-    dimensions = {}
-    for i in range(num_views):
-        dimensions[i] = len(X_train[0][i])
-    return N, num_views, X_train, Y_train, X_val, Y_val, X_test, Y_test,dimensions
+    return N, num_views, X_train, Y_train, X_val, Y_val, X_test, Y_test
 
 def for_PCA(data, num_components):
     """
     function for PCA
     @param data: apply the dimensionality reduction on data
     @param num_components: number of components to keep
-    @return: reduced_data
+    @return: reduced_data 
     """
     pca = PCA(n_components=num_components)
     reduced_data = pca.fit_transform(data)
